@@ -1,6 +1,6 @@
 Red [
     title: "ᠮᡠᡵᠰᠠ"
-    version: 0.1.0
+    version: 0.1.1
     description: {
         Random quote fetching console utility.
     }
@@ -11,7 +11,7 @@ Red [
 
 wrap: func [string max-len] [
     acc: 0
-    result: []
+    result: copy ""
     foreach word (split string #" ") [
         either acc >= max-len [
             append append result "^/ " word
@@ -21,21 +21,25 @@ wrap: func [string max-len] [
             acc: acc + length? word
         ]
     ]
-    return trim/head to-string result
+    trim/head result
 ]
 
 url: https://api.forismatic.com/api/1.0/?method=getQuote&format=text&lang=en
 
-text: split read url #"("                ;-- Split string by "("
-insert trim/lines text/1 {"^[[94m^[[1m}  ;-- Prepend " + color and trim excess whitespaces
-insert tail text/1 {^[[0m"}              ;-- Append " + reset color
-either text/2 [
-    quote-text: text/1                   ;-- First element of a block
-    quote-author: append "^[[93m" text/2 ;-- Second element of a block
-    clear find quote-author #")"         ;-- Removes parentheses
-    print wrap quote-text 40
-    print [quote-author "^[[0m"]
-] [
-    quote-text: text/1
-    print wrap quote-text 40
+text: split read url #"("     ;-- Split string by "("
+quote-text: trim/lines text/1 ;-- Trim excess whitespaces
+quote-author: text/2
+
+print rejoin [
+    {"^[[94m^[[1m}                      ;-- Bold bright blue
+    wrap quote-text 40
+    {^[[0m"}
+]
+
+if quote-author [
+    print rejoin [
+        "^[[93m"                        ;-- Bright yellow
+        trim/all/with quote-author #")" ;-- Removes parentheses
+        "^[[0m"
+    ]
 ]
