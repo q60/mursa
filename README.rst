@@ -1,7 +1,7 @@
 mursa |red|
 =====
 
-**Mursa** (IPA: [mur.sa], stylized as *ᠮᡠᡵᠰᠠ*) is a random quote
+**ᠮᡠᡵᠰᠠ** (IPA: [mur.sa], stylized as *ᠮᡠᡵᠰᠠ*) is a random quote
 fetching console utility. Written in Red.
 
 |screenshot|
